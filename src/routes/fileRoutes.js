@@ -1,23 +1,15 @@
 import { Router } from 'express';
 import upload from '../config/multer.js';
+import { uploadFile } from '../controllers/fileController.js';
 
-const router = Router();
+const router = Router(); //yeni router ekliyoruz.
 
-//basit upload route
+//upload.single middleware'i ile gelen tek dosyayı al, ardından uploadFile çalışsın.
+router.post('/upload', upload.single('file'), uploadFile,)
 
-router.post('/upload', upload.single('file'), (req,res) =>{
-    if(!req.file){
-        return res.status(400)._construct.json ({success: false, error: 'No file uploaded'});
-    }
-    res.json({
-        success: true,
-        message: 'File uploaded successfully',
-        data: {
-            originalName: req.file.originalname,
-            storedAs: req.file.filename,
-            path: req.file.path
-        }
-    });
-});
+//Deneme endpointi.
+router.get('/test', (req, res) => {
+    res.send('Çalışması lazım')
+})
 
 export default router;
